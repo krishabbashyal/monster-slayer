@@ -16,24 +16,27 @@
     <header>
       <h1>Monster Slayer</h1>
     </header>
-    <div v-if="playerHealth <= 0" id="game">
-      <section id="monster" class="container">
+    <div id="game">
+      <section v-if="!gameOver" id="monster" class="container">
         <h2>Monster Health</h2>
         <div class="healthbar">
-          <div class="healthbar__value"></div>
+          <div :style="{'width': monsterHealth + '%'}" class="healthbar__value"></div>
         </div>
       </section>
-      <section id="player" class="container">
+      <section v-if="!gameOver" id="player" class="container">
         <h2>Your Health</h2>
         <div class="healthbar">
-          <div class="healthbar__value"></div>
+          <div :style="{'width': playerHealth + '%'}" class="healthbar__value"></div>
         </div>
       </section>
-      <section id="controls">
-        <button @click="attack">ATTACK</button>
-        <button @click="specialAttack">SPECIAL ATTACK</button>
-        <button @click="heal">HEAL</button>
+      <section v-if="!gameOver" id="controls">
+        <button @click="attack(); specials()">ATTACK</button>
+        <button :disabled='!specialReady' @click="specialAttack">SPECIAL ATTACK</button>
+        <button :disabled='!healReady' @click="heal">HEAL</button>
         <button @click="surrender">SURRENDER</button>
+      </section>
+      <section class = "container" v-if="gameOver">
+        <button class = "play-again" @click="playAgain">Play Again!</button>
       </section>
       <section id="log" class="container">
         <h2>Battle Log</h2>
